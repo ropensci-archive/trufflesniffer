@@ -1,0 +1,113 @@
+trufflesniffer
+===========
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Build Status](https://travis-ci.com/ropenscilabs/trufflesniffer.svg?branch=master)](https://travis-ci.com/ropenscilabs/trufflesniffer)
+
+control how many times conditions are thrown
+
+Package API:
+
+```{r echo=FALSE, comment=NA, results="asis"}
+cat(paste(" -", paste(sprintf("`%s`", getNamespaceExports("trufflesniffer")), collapse = "\n - ")))
+```
+
+## Installation
+
+```{r eval=FALSE}
+remotes::install_github("ropenscilabs/trufflesniffer")
+```
+
+```{r}
+library("trufflesniffer")
+```
+
+## snif through a directory
+
+```{r}
+Sys.setenv(A_KEY = "a8d#d%d7g7g4012a4s2")
+path <- file.path(tempdir(), "foobar")
+dir.create(path)
+# no matches
+snif_one(path, Sys.getenv("A_KEY"))
+# add files with the secret
+cat(paste0("foo\nbar\nhello\nworld\n", 
+    Sys.getenv("A_KEY"), "\n"), file = file.path(path, "stuff.R"))
+# matches!
+snif_one(path, Sys.getenv("A_KEY"))
+```
+
+## look across package in general
+
+make a fake package
+
+```{r message=FALSE}
+foo <- function(key = NULL) {
+  if (is.null(key)) key <- "mysecretkey"
+}
+package.skeleton(name = "mypkg", list = "foo", path = tempdir())
+pkgpath <- file.path(tempdir(), "mypkg")
+# check that you have a pkg at mypkg
+list.files(pkgpath)
+```
+
+snif out any secrets
+
+```{r}
+snif_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
+```
+
+cleanup
+
+```{r}
+unlink(pkgpath)
+```
+
+## check in test fixtures
+
+make a fake package with tests and fixtures
+
+```{r message=FALSE}
+foo <- function(key = NULL) {
+  if (is.null(key)) key <- "a2s323223asd423adsf4"
+}
+package.skeleton("herpkg", list = "foo", path = tempdir())
+pkgpath <- file.path(tempdir(), "herpkg")
+dir.create(file.path(pkgpath, "tests/testthat"), recursive = TRUE)
+dir.create(file.path(pkgpath, "tests/fixtures"), recursive = TRUE)
+cat("library(vcr)
+vcr::vcr_configure('../fixtures', 
+  filter_sensitive_data = list('<<mytoken>>' = Sys.getenv('MY_KEY'))
+)\n", file = file.path(pkgpath, "tests/testthat/helper-herpkg.R"))
+cat("a2s323223asd423adsf4\n", 
+  file = file.path(pkgpath, "tests/fixtures/foo.yml"))
+# check that you have a pkg at herpkg
+list.files(pkgpath)
+list.files(file.path(pkgpath, "tests/testthat"))
+readLines(file.path(pkgpath, "tests/testthat/helper-herpkg.R"))
+list.files(file.path(pkgpath, "tests/fixtures"))
+readLines(file.path(pkgpath, "tests/fixtures/foo.yml"))
+```
+
+snif out any secrets
+
+```{r}
+Sys.setenv('MY_KEY' = 'a2s323223asd423adsf4')
+snif_secrets_fixtures(pkgpath)
+```
+
+## Meta
+
+* Please [report any issues or bugs](https://github.com/ropenscilabs/trufflesniffer/issues).
+* License: MIT
+* Get citation information for `trufflesniffer` in R doing `citation(package = 'trufflesniffer')`
+* Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+[![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
