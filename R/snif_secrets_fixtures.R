@@ -19,7 +19,7 @@ snif_secrets_fixtures <- function(dir = ".") {
   pd <- pd[!pd$token == "expr", ]
   row.names(pd) <- NULL
   z <- which(pd$text == "Sys.getenv")
-  keys <- gsub("'", "", vapply(z, function(w) 
+  keys <- gsub("'|\"", "", vapply(z, function(w) 
     utils::getParseText(pd, w + 2), ""))
   secrets <- as.list(vapply(keys, function(z) Sys.getenv(z), ""))
 
