@@ -6,7 +6,8 @@ trufflesniffer
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Build Status](https://travis-ci.com/ropenscilabs/trufflesniffer.svg?branch=master)](https://travis-ci.com/ropenscilabs/trufflesniffer)
 
-control how many times conditions are thrown
+Scan secrets in r scripts, packages, or projects
+
 
 Package API:
 
@@ -73,12 +74,7 @@ snif_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
 #> [1] 3
 ```
 
-cleanup
 
-
-```r
-unlink(pkgpath)
-```
 
 ## check in test fixtures
 
@@ -105,11 +101,12 @@ list.files(pkgpath)
 #> [4] "R"                  "Read-and-delete-me" "tests"
 list.files(file.path(pkgpath, "tests/testthat"))
 #> [1] "helper-herpkg.R"
-readLines(file.path(pkgpath, "tests/testthat/helper-herpkg.R"))
-#> [1] "library(vcr)"                                                        
-#> [2] "vcr::vcr_configure('../fixtures', "                                  
-#> [3] "  filter_sensitive_data = list('<<mytoken>>' = Sys.getenv('MY_KEY'))"
-#> [4] ")"
+cat(readLines(file.path(pkgpath, "tests/testthat/helper-herpkg.R")),
+  sep = "\n")
+#> library(vcr)
+#> vcr::vcr_configure('../fixtures', 
+#>   filter_sensitive_data = list('<<mytoken>>' = Sys.getenv('MY_KEY'))
+#> )
 list.files(file.path(pkgpath, "tests/fixtures"))
 #> [1] "foo.yml"
 readLines(file.path(pkgpath, "tests/fixtures/foo.yml"))
@@ -120,6 +117,7 @@ snif out any secrets
 
 
 ```r
+library(rlang)
 Sys.setenv('MY_KEY' = 'a2s323223asd423adsf4')
 snif_secrets_fixtures(pkgpath)
 #> $MY_KEY
@@ -132,6 +130,8 @@ snif_secrets_fixtures(pkgpath)
 * Please [report any issues or bugs](https://github.com/ropenscilabs/trufflesniffer/issues).
 * License: MIT
 * Get citation information for `trufflesniffer` in R doing `citation(package = 'trufflesniffer')`
-* Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+* Please note that this project is released with a [Contributor Code of Conduct][coc]. By participating in this project you agree to abide by its terms.
 
 [![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
+
+[coc]: https://github.com/ropenscilabs/trufflesniffer/blob/master/CODE_OF_CONDUCT.md
