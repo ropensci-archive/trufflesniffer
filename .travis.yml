@@ -1,18 +1,25 @@
 language: r
-sudo: false
 cache: packages
-dist: trusty
 
-r_binary_packages:
-- covr
+matrix:
+  include:
+    - r: release
+      env: R_CODECOV=true
+    - r: devel
+      env: _R_CHECK_LENGTH_1_LOGIC2_=TRUE
+
+r_packages:
+  - covr
 
 after_success:
-- Rscript -e 'covr::codecov()'
+  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
 
 env:
   global:
-  - R_BUILD_ARGS="--no-manual"
-  - R_CHECK_ARGS="--as-cran --no-manual"
+     - R_LIBS="https://cran.rstudio.com"
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+     - BOOTSTRAP_LATEX=""
 
 notifications:
   email:
