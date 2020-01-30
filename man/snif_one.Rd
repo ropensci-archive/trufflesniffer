@@ -26,8 +26,8 @@ dir.create(path)
 # no matches
 snif_one(path, Sys.getenv("A_KEY"))
 # add files with the secret
-cat(paste0("foo\\nbar\\nhello\\nworld\\n", 
-  Sys.getenv("A_KEY"), "\\n"), file = file.path(path, "stuff.R"))
+cat(paste0("foo\nbar\nhello\nworld\n", 
+  Sys.getenv("A_KEY"), "\n"), file = file.path(path, "stuff.R"))
 # matches!
 snif_one(path, Sys.getenv("A_KEY"))
 }
