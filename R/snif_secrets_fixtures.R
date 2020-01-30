@@ -7,9 +7,9 @@
 #' @examples \dontrun{
 #' # dir = tempdir()
 #' path <- "/Users/sckott/github/ropensci/taxize"
-#' snif_secrets_fixtures(dir = path)
+#' sniff_secrets_fixtures(dir = path)
 #' }
-snif_secrets_fixtures <- function(dir = ".") {
+sniff_secrets_fixtures <- function(dir = ".") {
   if (!interactive()) {
     ks <- getOption("keep.source")
     options(keep.source = TRUE)
@@ -27,6 +27,7 @@ snif_secrets_fixtures <- function(dir = ".") {
   keys <- gsub("'|\"", "", vapply(z, function(w) 
     utils::getParseText(pd, w + 2), ""))
   secrets <- as.list(vapply(keys, function(z) Sys.getenv(z), ""))
+  if (length(secrets) == 0) return(list())
 
   # look for secrets
   vcrconfline <- which(pd$text == "vcr_configure")
@@ -36,7 +37,7 @@ snif_secrets_fixtures <- function(dir = ".") {
   fixtures_path <- file.path(pkg$path, "tests", basename(vcrconf_path))
   out <- list()
   for (i in seq_along(secrets)) {
-    out[[ names(secrets)[i] ]] <- snif_one(fixtures_path, secrets[[i]])
+    out[[ names(secrets)[i] ]] <- sniff_one(fixtures_path, secrets[[i]])
   }
   return(out)
 }

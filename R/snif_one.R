@@ -10,17 +10,17 @@
 #' path <- file.path(tempdir(), "foobar")
 #' dir.create(path)
 #' # no matches
-#' snif_one(path, Sys.getenv("A_KEY"))
+#' sniff_one(path, Sys.getenv("A_KEY"))
 #' # add files with the secret
 #' cat(paste0("foo\nbar\nhello\nworld\n", 
 #'   Sys.getenv("A_KEY"), "\n"), file = file.path(path, "stuff.R"))
 #' # matches!
-#' snif_one(path, Sys.getenv("A_KEY"))
+#' sniff_one(path, Sys.getenv("A_KEY"))
 #' }
-snif_one <- function(path, secret_string) {
+sniff_one <- function(path, secret_string) {
   assert(path, "character")
   assert(secret_string, "character")
-  stopifnot(nzchar(secret_string))
+  if (!nzchar(secret_string)) return(list())
 
   all_paths <- list.files(path, full.names = TRUE)
   Filter(length, stats::setNames(

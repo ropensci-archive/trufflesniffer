@@ -7,16 +7,16 @@
 #' found, or a named list of files and the line numbers secrets found on
 #' @examples \dontrun{
 #' pkgpath = tempdir()
-#' snif_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
+#' sniff_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
 #' unlink(pkgpath)
 #' }
-snif_secrets_pkg <- function(dir = ".", secrets) {
+sniff_secrets_pkg <- function(dir = ".", secrets) {
   assert(dir, "character")
   pkg <- as_pkg(dir)
   r_path <- file.path(pkg$path, "R")
   out <- list()
   for (i in seq_along(secrets)) {
-    out[[ secrets[i] ]] <- snif_one(r_path, secrets[i])
+    out[[ secrets[i] ]] <- sniff_one(r_path, secrets[i])
   }
   return(out)
 }

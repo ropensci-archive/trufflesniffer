@@ -10,6 +10,6 @@
 #' sniffer(dir = path)
 #' }
 sniffer <- function(dir = ".") {
-  res <- snif_secrets_fixtures(dir)
+  res <- sniff_secrets_fixtures(dir)
   cat_results(res)
 }

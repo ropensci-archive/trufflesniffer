@@ -1,6 +1,6 @@
 #' print scan results
 #' @keywords internal
-#' @param x output of `snif_secrets`
+#' @param x output of `sniff_secrets`
 #' @return cat'ed output to console
 cat_results <- function(res) {
   assert(res, "list")

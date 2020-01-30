@@ -30,19 +30,19 @@ remotes::install_github("ropenscilabs/trufflesniffer")
 library("trufflesniffer")
 ```
 
-## snif through a directory
+## sniff through a directory
 
 ```{r}
 Sys.setenv(A_KEY = "a8d#d%d7g7g4012a4s2")
 path <- file.path(tempdir(), "foobar")
 dir.create(path)
 # no matches
-snif_one(path, Sys.getenv("A_KEY"))
+sniff_one(path, Sys.getenv("A_KEY"))
 # add files with the secret
 cat(paste0("foo\nbar\nhello\nworld\n", 
     Sys.getenv("A_KEY"), "\n"), file = file.path(path, "stuff.R"))
 # matches!
-snif_one(path, Sys.getenv("A_KEY"))
+sniff_one(path, Sys.getenv("A_KEY"))
 ```
 
 ## look across package in general
@@ -59,10 +59,10 @@ pkgpath <- file.path(tempdir(), "mypkg")
 list.files(pkgpath)
 ```
 
-snif out any secrets
+sniff out any secrets
 
 ```{r}
-snif_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
+sniff_secrets_pkg(dir = pkgpath, secrets = c("mysecretkey"))
 ```
 
 ```{r echo=FALSE}
@@ -96,12 +96,11 @@ list.files(file.path(pkgpath, "tests/fixtures"))
 readLines(file.path(pkgpath, "tests/fixtures/foo.yml"))
 ```
 
-snif out any secrets
+sniff out any secrets
 
 ```{r}
-library(rlang)
 Sys.setenv('MY_KEY' = 'a2s323223asd423adsf4')
-snif_secrets_fixtures(pkgpath)
+sniff_secrets_fixtures(pkgpath)
 ```
 
 ## Meta

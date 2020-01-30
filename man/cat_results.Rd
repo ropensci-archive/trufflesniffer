@@ -7,7 +7,7 @@
 cat_results(res)
 }
 \arguments{
-\item{x}{output of \code{snif_secrets}}
+\item{x}{output of \code{sniff_secrets}}
 }
 \value{
 cat'ed output to console
