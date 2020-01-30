@@ -10,6 +10,11 @@
 #' snif_secrets_fixtures(dir = path)
 #' }
 snif_secrets_fixtures <- function(dir = ".") {
+  if (!interactive()) {
+    ks <- getOption("keep.source")
+    options(keep.source = TRUE)
+    on.exit(options(keep.source = ks))
+  }
   assert(dir, "character")
   pkg <- as_pkg(dir)
   helper_file <- list.files(file.path(pkg$path, "tests/testthat"), 
