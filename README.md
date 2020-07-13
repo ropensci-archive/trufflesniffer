@@ -129,8 +129,6 @@ sniff_secrets_fixtures(pkgpath)
 * Please [report any issues or bugs](https://github.com/ropenscilabs/trufflesniffer/issues).
 * License: MIT
 * Get citation information for `trufflesniffer` in R doing `citation(package = 'trufflesniffer')`
-* Please note that this project is released with a [Contributor Code of Conduct][coc]. By participating in this project you agree to abide by its terms.
+* Please note that this package is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/). By contributing to this project, you agree to abide by its terms.
 
 [![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
-
-[coc]: https://github.com/ropenscilabs/trufflesniffer/blob/master/CODE_OF_CONDUCT.md
