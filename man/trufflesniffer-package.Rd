@@ -5,9 +5,6 @@
 \alias{trufflesniffer-package}
 \alias{trufflesniffer}
 \title{sniff out secrets}
-\description{
-sniff out secrets
-}
 \author{
 Scott Chamberlain \href{mailto:sckott@protonmail.com}{sckott@protonmail.com}
 }
