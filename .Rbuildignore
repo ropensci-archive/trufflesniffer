@@ -4,12 +4,8 @@ Makefile
 ^.*\.Rproj$
 ^\.Rproj\.user$
 README.Rmd
-^CODE_OF_CONDUCT\.md$
 ^cran-comments\.md$
 inst/img/
 appveyor.yml
 .github
 ^codemeta\.json$
-vignettes/figure
-^revdep$
-

@@ -1,5 +1,5 @@
-#' sniff out secrets
-#'
+#' @title trufflesniffer
+#' @description sniff out secrets
 #' @importFrom cli rule symbol cat_line
 #' @importFrom crayon style
 #' @name trufflesniffer-package
